@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: mytool
+
+sentinel:
+  qps:
+    limit: 1
+
+mytool:
+  file:
+    storage:
+      code-mybook: /data/files/mytool/code/mybook/
+      mdtopdf: /data/files/mytool/mdtopdf/
