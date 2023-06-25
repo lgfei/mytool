@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public final class IOUtil {
 
@@ -36,6 +38,7 @@ public final class IOUtil {
     }
 
     public static void downloadFile(String fileUrl, String savePath) throws IOException {
+        checkParentDir(savePath);
         URL url = new URL(fileUrl);
         BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
         FileOutputStream fileOutputStream = new FileOutputStream(savePath);
@@ -48,7 +51,7 @@ public final class IOUtil {
         inputStream.close();
     }
 
-    public static void cloneRepository(String repositoryUrl, String codeDir, long currTime) {
+    public static void cloneRepository(String repositoryUrl, String codeDir, String currTime) {
         try{
             // 清理旧文件
             removeDir(codeDir);
@@ -83,7 +86,7 @@ public final class IOUtil {
                 content.append(line).append("\n");
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CommonException(e);
         }finally {
             if( null != reader){
                 try {
@@ -100,10 +103,11 @@ public final class IOUtil {
     public static void writeStrToFile(String content, String filePath){
         BufferedWriter writer = null;
         try {
+            checkParentDir(filePath);
             writer = new BufferedWriter(new FileWriter(filePath));
             writer.write(content);
         }catch (IOException e){
-            throw new RuntimeException(e);
+            throw new CommonException(e);
         }finally {
             if(null != writer){
                 try {
@@ -112,6 +116,15 @@ public final class IOUtil {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private static void checkParentDir(String filePath){
+        Path path = Paths.get(filePath);
+        Path directory = path.getParent();
+        File dir = directory.toFile();
+        if(!dir.exists()){
+            dir.mkdirs();
         }
     }
 }
