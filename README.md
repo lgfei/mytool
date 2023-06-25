@@ -1,11 +1,8 @@
 # mytool
 工具箱，封装或者集成一些常用的工具，最大程度降低使用门槛。
 
-## 接口
-* /v1/md/downloadResume <br/>
-接口功能: 下载我的在线简历 <br/>
-详细描述: <br/>
-技术点: 
+## Swagger地址
+https://tool.lgfei.com/swagger-ui/index.html
 
 ## 碰到的问题
 1. 限流组件--SentinelWebAutoConfiguration循环依赖问题 <br/>
