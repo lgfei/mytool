@@ -95,7 +95,7 @@ public class MarkdownController {
         // 3.将html文件转为想要文件类型
         GroupDocsCloudStorageDto resultDto = null;
         try {
-            resultDto = converter.convertHtmlToDocx(html, groupdocsConversionDir, fileName);
+            resultDto = converter.convertHtmlToPdf(html, groupdocsConversionDir, fileName);
             log.info("html文件转化为目标文件成功");
         } catch (Exception e) {
             throw new CommonException("调用GroupDocsCloud接口失败", e);

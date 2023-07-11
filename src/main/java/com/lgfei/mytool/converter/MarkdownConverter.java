@@ -85,9 +85,10 @@ public class MarkdownConverter {
         );
     }
 
-    public GroupDocsCloudStorageDto convertHtmlToDocx(String html, String filePath, String fileName) {
+    public GroupDocsCloudStorageDto convertHtmlToPdf(String html, String filePath, String fileName) {
         String htmlFileName = fileName + ".html";
         String htmlFilePath = filePath + htmlFileName;
+        String docxFileName = fileName + ".docx";
         FileApi fileApi = new FileApi(config.getClient().getId(), config.getClient().getSecret());
         UploadFileRequest uploadFileRequest = null;
         StoredConvertedResult convertedResult = null;
@@ -109,20 +110,31 @@ public class MarkdownConverter {
                 throw new CommonException("html文件上传失败");
             }
 
-            // 将html文件转为docx文件
             Configuration configuration = new Configuration(config.getClient().getId(), config.getClient().getSecret());
             ConvertApi convertApi = new ConvertApi(configuration);
-            ConvertSettings settings = new ConvertSettings();
-            settings.setFilePath("html" + File.separator + htmlFileName);
-            settings.setFormat("docx");
-            settings.setOutputPath("docx");
-            List<StoredConvertedResult> convertedResultList = convertApi.convertDocument(new ConvertDocumentRequest(settings));
-            if(CollectionUtils.isEmpty(convertedResultList)){
+
+            // 将html文件转为docx文件
+            ConvertSettings toDocxSettings = new ConvertSettings();
+            toDocxSettings.setFilePath("html" + File.separator + htmlFileName);
+            toDocxSettings.setFormat("docx");
+            toDocxSettings.setOutputPath("docx");
+            List<StoredConvertedResult> convertedToDocxResultList = convertApi.convertDocument(new ConvertDocumentRequest(toDocxSettings));
+            if(CollectionUtils.isEmpty(convertedToDocxResultList)){
                 throw new CommonException("html转docx失败");
             }
 
-            // 下载docx文件
-            convertedResult = convertedResultList.get(0);
+            // docx文件转pdf
+            ConvertSettings toPdfSettings = new ConvertSettings();
+            toPdfSettings.setFilePath("docx" + File.separator + docxFileName);
+            toPdfSettings.setFormat("pdf");
+            toPdfSettings.setOutputPath("pdf");
+            List<StoredConvertedResult> convertedToPdfResultList = convertApi.convertDocument(new ConvertDocumentRequest(toPdfSettings));
+            if(CollectionUtils.isEmpty(convertedToPdfResultList)){
+                throw new CommonException("docx转pdf失败");
+            }
+
+            // 下载pdf文件
+            convertedResult = convertedToPdfResultList.get(0);
             DownloadFileRequest downloadFileRequest = new DownloadFileRequest(convertedResult.getPath(),
                     config.getStorage().getName(), null);
             File downloadFile = fileApi.downloadFile(downloadFileRequest);
