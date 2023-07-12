@@ -8,6 +8,7 @@ import com.lgfei.mytool.exception.CommonException;
 import com.lgfei.mytool.util.IOUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.jsoup.internal.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +39,7 @@ public class MarkdownController {
     private static final Logger log = LoggerFactory.getLogger(MarkdownController.class);
 
     private final MarkdownConverter converter;
+    private static final int MAX_LEN = 1024 * 1024;
 
     @Autowired
     public MarkdownController(MarkdownConverter converter){
@@ -110,6 +115,67 @@ public class MarkdownController {
             // 设置响应头
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resultDto.getDownloadFileName() + "\"");
+            // 返回文件响应
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            throw new CommonException("下载目标文件失败", e);
+        }
+    }
+
+    @ApiOperation(value = "md内容转html")
+    @PostMapping("/toHtml")
+    @SentinelResource(value = SentinelRuleConfig.QPS_LIMIT)
+    public ResponseEntity<Resource> toHtml(@RequestParam(value = "md") String md){
+        // 校验
+        String mdData = md.trim();
+        if(!StringUtils.hasLength(mdData)){
+            throw new CommonException("内容不能为空");
+        }
+        if(mdData.length() > MAX_LEN){
+            throw new CommonException("内容超出最大长度限制");
+        }
+        String currTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String mdFilePath = groupdocsConversionDir + "md_to_html_" +  currTime + ".md";
+        if(mdData.startsWith("http")){
+            // 如果是文件地址则先下载
+            try {
+                log.info("开始下载md文件:[{}]", mdData);
+                IOUtil.downloadFile(mdData, mdFilePath);
+            } catch (IOException e) {
+                throw new CommonException(String.format("md文件[%s]下载失败:[%s]", md, e.getMessage()));
+            }
+        }else{
+            // 将md内容写入临时文件
+            IOUtil.writeStrToFile(mdData, mdFilePath);
+        }
+        log.info("md文件保存成功");
+
+        String html = null;
+        String htmlFilePath = groupdocsConversionDir + "md_to_html_" +  currTime + ".html";
+        try {
+            String mdFileData = IOUtil.readFileToStr(mdFilePath);
+            log.info("读取md文件内容成功");
+            html = MarkdownConverter.convertMarkdownToHtml(mdFileData);
+            log.info("将markdown语法解析为html成功");
+            IOUtil.writeStrToFile(html, htmlFilePath);
+            log.info("html文件保存成功");
+        } catch (Exception e) {
+            throw new CommonException("将markdown文件转为html文件失败", e);
+        }
+
+        try {
+            File targetFile = new File(htmlFilePath);
+            InputStream inputStream = new FileInputStream(targetFile);
+            log.info("开始下载目标文件");
+            // 创建文件资源
+            Resource resource = new InputStreamResource(inputStream);
+            // 设置响应头
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + targetFile.getName() + "\"");
             // 返回文件响应
             return ResponseEntity.ok()
                     .headers(headers)

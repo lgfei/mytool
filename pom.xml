@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgfei</groupId>
     <artifactId>mytool</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>mytool</name>
     <packaging>jar</packaging>
     <description>Lgfei tool kit</description>
