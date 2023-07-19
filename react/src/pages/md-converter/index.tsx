@@ -1,8 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Spin, Layout, Form, Input, Space, message, Button } from 'antd';
+import { message, Card, Button, Form, Input, Space, } from 'antd';
 
-const { Header, Footer, Content } = Layout;
+import service from "./service";
+
+const { TextArea } = Input;
 
 const MyPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -16,53 +18,54 @@ const MyPage: React.FC = () => {
     console.log(value);
   };
 
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    console.log('Change:', e.target.value);
+  };
+
+  const toHtml = (md: string) => {
+    service.toHtml(md);
+  }
+
   return (
-    <Spin tip="Loading" size="large" spinning={loading}>
-    <div className="App">
-      {contextHolder}
-      <Layout>
-        <Header className='App-header'>
-          Welcome to tool.lgfei.com!
-        </Header>
-        <Content className='App-content'>
-          <Space direction={"vertical"} style={{width:"80%"}}>
-            <Form
-              name="basic"
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-            >
-              <Form.Item
-                label="Username"
-                name="username"
-                rules={[{ required: true, message: 'Please input your username!' }]}
-              >
-                <Input />
-              </Form.Item>
+    <>
+      <Card title="Markdown语法解析" bordered={false}>
+        <Form
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label=""
+            name="md"
+            rules={[{ required: true, message: '请输入md内容' }]}
+          >
+            <TextArea
+              showCount
+              maxLength={1048576}
+              style={{ height: 260, resize: 'none' }}
+              onChange={onChange}
+              placeholder="在此输入markdown内容或者http链接地址"
+            />
+          </Form.Item>
 
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
-              >
-                <Input.Password />
-              </Form.Item>
-
-              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
-          </Space>
-        </Content>
-        <Footer className='App-footer'>
-          <Space>关于我们 | 免责声明 | Copyright © 2018-2024 All Rights Reserved. | 粤ICP备18059979号-1</Space>  
-        </Footer>
-      </Layout>
-    </div>
-  </Spin>
+          <Form.Item>
+            <Space>
+              <Button type="primary" htmlType="submit" onClick={(e) => toHtml}>
+                toHtml
+              </Button>
+              <Button type="primary" htmlType="submit">
+                toDocx
+              </Button>
+              <Button type="primary" htmlType="submit">
+                toPdf
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Card>
+    </>
   );
 };
 

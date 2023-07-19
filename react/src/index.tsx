@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import App from './App';
+import Main from './pages/Main';
 import MdConverter from './pages/md-converter';
 import reportWebVitals from './reportWebVitals';
 
@@ -12,8 +13,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter>
     <Routes>
-    <Route path="/" element={<App />}></Route>
-      <Route path="/md-converter" element={<MdConverter />}></Route>
+      <Route path="/" element={<App appContent={<Main/>}/>}></Route>
+      <Route path="/md-converter" element={<App appContent={<MdConverter/>}/>}></Route>
     </Routes>
   </BrowserRouter>
 );

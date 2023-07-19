@@ -1,6 +1,8 @@
 package com.lgfei.mytool.util;
 
 import com.lgfei.mytool.exception.CommonException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -10,11 +12,30 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public final class IOUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(IOUtil.class);
+    public static void closeIOStream(InputStream in, OutputStream out){
+        if(null != in){
+            try {
+                in.close();
+            } catch (IOException e) {
+                LOGGER.error("关闭输入流异常：{}", e.getMessage());
+            }
+        }
+        if(null != out){
+            try {
+                out.close();
+            } catch (IOException e) {
+                LOGGER.error("关闭输出流异常：{}", e.getMessage());
+            }
+        }
+    }
 
     // 删除文件夹
     public static void removeDir(String path) {
@@ -71,7 +92,7 @@ public final class IOUtil {
                 throw new IOException("代码克隆失败！Exit code: " + exitCode);
             }
         }catch (Exception e){
-            throw new CommonException(e);
+            throw new CommonException("克隆git仓库代码异常",e);
         }
     }
 
@@ -86,13 +107,13 @@ public final class IOUtil {
                 content.append(line).append("\n");
             }
         } catch (IOException e) {
-            throw new CommonException(e);
+            throw new CommonException("文件内容读取异常", e);
         }finally {
             if( null != reader){
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("关闭Reader异常：{}", e.getMessage());
                 }
             }
         }
@@ -107,13 +128,13 @@ public final class IOUtil {
             writer = new BufferedWriter(new FileWriter(filePath));
             writer.write(content);
         }catch (IOException e){
-            throw new CommonException(e);
+            throw new CommonException("字符写入文件异常", e);
         }finally {
             if(null != writer){
                 try {
                     writer.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("关闭Writer异常：{}", e.getMessage());
                 }
             }
         }
