@@ -2,7 +2,7 @@
 工具箱，封装或者集成一些常用的工具，最大程度降低使用门槛。
 
 ## Swagger地址
-https://tool.lgfei.com/swagger-ui/index.html
+https://tool.lgfei.com/api/swagger-ui/index.html
 
 ## 碰到的问题
 1. 限流组件--SentinelWebAutoConfiguration循环依赖问题 <br/>
