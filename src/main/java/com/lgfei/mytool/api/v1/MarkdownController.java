@@ -80,7 +80,8 @@ public class MarkdownController {
             //e.printStackTrace();
             throw new CommonException("下载目标文件失败", e);
         }finally {
-            IOUtil.closeIOStream(inputStream, null);
+            // 先于return执行，所以不能在此关闭流
+            //IOUtil.closeIOStream(inputStream, null);
         }
     }
 }

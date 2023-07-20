@@ -4,6 +4,7 @@ import com.lgfei.mytool.converter.MarkdownConverter;
 import com.lgfei.mytool.dto.GroupDocsCloudStorageDto;
 import com.lgfei.mytool.exception.CommonException;
 import com.lgfei.mytool.service.MarkdownService;
+import com.lgfei.mytool.util.DateUtil;
 import com.lgfei.mytool.util.IOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,14 +44,16 @@ public class MarkdownServiceImpl implements MarkdownService {
      */
     @Override
     public GroupDocsCloudStorageDto generateResume() {
-        String currTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String currDate = DateUtil.getCurrDate2yyyyMMdd();
+        String workDir = groupdocsConversionDir + currDate + File.separator;
+        String currTime = DateUtil.getCurrTime2yyyyMMddHHmmss();
         //String mdFileUrl = "https://raw.githubusercontent.com/lgfei/mybook/master/resume/resume.md";
         String mdFileUrl = "https://gitee.com/lgfei/mybook/raw/master/resume/resume.md";
         String fileName = "lgf_resume_" + currTime;
         String mdFilePath = null;
         // 1.下载markdown文件
         try {
-            mdFilePath = groupdocsConversionDir + fileName  + ".md";
+            mdFilePath = workDir + fileName  + ".md";
             LOGGER.info("开始下载md文件:[{}]", mdFileUrl);
             IOUtil.downloadFile(mdFileUrl, mdFilePath);
         } catch (IOException e) {
@@ -76,7 +79,7 @@ public class MarkdownServiceImpl implements MarkdownService {
         // 3.将html文件转为想要文件类型
         GroupDocsCloudStorageDto resultDto = null;
         try {
-            resultDto = converter.convertHtmlToPdf(html, groupdocsConversionDir, fileName);
+            resultDto = converter.convertHtmlToPdf(html, workDir, fileName);
             LOGGER.info("html文件转化为目标文件成功");
             return resultDto;
         } catch (Exception e) {
@@ -94,8 +97,10 @@ public class MarkdownServiceImpl implements MarkdownService {
         if(mdData.length() > MAX_LEN){
             throw new CommonException("内容超出最大长度限制");
         }
-        String currTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String mdFilePath = groupdocsConversionDir + "md_to_html_" +  currTime + ".md";
+        String currDate = DateUtil.getCurrDate2yyyyMMdd();
+        String workDir = groupdocsConversionDir + currDate + File.separator;
+        String currTime = DateUtil.getCurrTime2yyyyMMddHHmmss();
+        String mdFilePath = workDir + "md_to_html_" +  currTime + ".md";
         if(mdData.startsWith("http")){
             // 如果是文件地址则先下载
             try {
@@ -112,7 +117,7 @@ public class MarkdownServiceImpl implements MarkdownService {
 
         String html = null;
         String htmlFileName = "md_to_html_" +  currTime + ".html";
-        String htmlFilePath = groupdocsConversionDir + htmlFileName;
+        String htmlFilePath = workDir + htmlFileName;
         try {
             String mdFileData = IOUtil.readFileToStr(mdFilePath);
             LOGGER.info("读取md文件内容成功");
