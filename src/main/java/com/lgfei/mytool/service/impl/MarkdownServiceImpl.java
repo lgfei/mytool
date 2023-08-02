@@ -47,8 +47,8 @@ public class MarkdownServiceImpl implements MarkdownService {
         String currDate = DateUtil.getCurrDate2yyyyMMdd();
         String workDir = groupdocsConversionDir + currDate + File.separator;
         String currTime = DateUtil.getCurrTime2yyyyMMddHHmmss();
-        //String mdFileUrl = "https://raw.githubusercontent.com/lgfei/mybook/master/resume/resume.md";
-        String mdFileUrl = "https://gitee.com/lgfei/mybook/raw/master/resume/resume.md";
+        //String mdFileUrl = "https://raw.githubusercontent.com/lgfei/mybook/master/resume/README.md";
+        String mdFileUrl = "https://gitee.com/lgfei/mybook/raw/master/resume/README.md";
         String fileName = "lgf_resume_" + currTime;
         String mdFilePath = null;
         // 1.下载markdown文件
@@ -60,7 +60,7 @@ public class MarkdownServiceImpl implements MarkdownService {
             LOGGER.warn("md文件下载失败:[{}], 开始克隆git仓库代码", e.getMessage());
             //IOUtil.cloneRepository("https://github.com/lgfei/mybook.git", CODE_DIR, currTime);
             IOUtil.cloneRepository("https://gitee.com/lgfei/mybook.git", mybookCodeDir, currTime);
-            mdFilePath = mybookCodeDir + currTime + File.separator + "resume" + File.separator + "resume.md";
+            mdFilePath = mybookCodeDir + currTime + File.separator + "resume" + File.separator + "README.md";
         }
 
         // 2.将markdown文件转为html文件
