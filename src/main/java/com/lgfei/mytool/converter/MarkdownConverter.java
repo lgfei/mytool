@@ -97,7 +97,7 @@ public class MarkdownConverter {
             // 上传html至 groupdocs.cloud
             IOUtil.writeStrToFile(html, htmlFilePath);
             File htmlFile = new File(htmlFilePath);
-            uploadFileRequest = new UploadFileRequest("html" + File.separator + htmlFileName, htmlFile,
+            uploadFileRequest = new UploadFileRequest(htmlFileName, htmlFile,
                     config.getStorage().getName());
             FilesUploadResult filesUploadResult =  fileApi.uploadFile(uploadFileRequest);
             List<Error> filesUploadErrors = filesUploadResult.getErrors();
@@ -115,9 +115,9 @@ public class MarkdownConverter {
 
             // 将html文件转为docx文件
             ConvertSettings toDocxSettings = new ConvertSettings();
-            toDocxSettings.setFilePath("html" + File.separator + htmlFileName);
+            toDocxSettings.setFilePath(htmlFileName);
             toDocxSettings.setFormat("docx");
-            toDocxSettings.setOutputPath("docx");
+            toDocxSettings.setOutputPath(File.separator);
             List<StoredConvertedResult> convertedToDocxResultList = convertApi.convertDocument(new ConvertDocumentRequest(toDocxSettings));
             if(CollectionUtils.isEmpty(convertedToDocxResultList)){
                 throw new CommonException("html转docx失败");
@@ -125,9 +125,9 @@ public class MarkdownConverter {
 
             // docx文件转pdf
             ConvertSettings toPdfSettings = new ConvertSettings();
-            toPdfSettings.setFilePath("docx" + File.separator + docxFileName);
+            toPdfSettings.setFilePath(docxFileName);
             toPdfSettings.setFormat("pdf");
-            toPdfSettings.setOutputPath("pdf");
+            toPdfSettings.setOutputPath(File.separator);
             List<StoredConvertedResult> convertedToPdfResultList = convertApi.convertDocument(new ConvertDocumentRequest(toPdfSettings));
             if(CollectionUtils.isEmpty(convertedToPdfResultList)){
                 throw new CommonException("docx转pdf失败");
