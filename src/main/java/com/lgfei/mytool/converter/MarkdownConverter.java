@@ -2,7 +2,6 @@ package com.lgfei.mytool.converter;
 
 import com.groupdocs.cloud.conversion.api.ConvertApi;
 import com.groupdocs.cloud.conversion.api.FileApi;
-import com.groupdocs.cloud.conversion.client.ApiCallback;
 import com.groupdocs.cloud.conversion.client.ApiException;
 import com.groupdocs.cloud.conversion.client.Configuration;
 import com.groupdocs.cloud.conversion.model.ConvertSettings;
@@ -10,7 +9,6 @@ import com.groupdocs.cloud.conversion.model.Error;
 import com.groupdocs.cloud.conversion.model.FilesUploadResult;
 import com.groupdocs.cloud.conversion.model.StoredConvertedResult;
 import com.groupdocs.cloud.conversion.model.requests.ConvertDocumentRequest;
-import com.groupdocs.cloud.conversion.model.requests.DeleteFileRequest;
 import com.groupdocs.cloud.conversion.model.requests.DownloadFileRequest;
 import com.groupdocs.cloud.conversion.model.requests.UploadFileRequest;
 import com.lgfei.mytool.config.GroupDocsCloudConfig;
@@ -27,15 +25,12 @@ import com.vladsch.flexmark.util.misc.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class MarkdownConverter {
