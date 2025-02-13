@@ -2,7 +2,7 @@ package com.lgfei.mytool.api.v1;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.lgfei.mytool.config.SentinelRuleConfig;
-import com.lgfei.mytool.dto.GroupDocsCloudStorageDto;
+import com.lgfei.mytool.dto.GroupDocsCloudStorageDTO;
 import com.lgfei.mytool.exception.CommonException;
 import com.lgfei.mytool.service.MarkdownService;
 import io.swagger.annotations.Api;
@@ -50,7 +50,7 @@ public class MarkdownController {
         return this.buildDownloadResponse(service.toHtml(md));
     }
 
-    private ResponseEntity<Resource> buildDownloadResponse(GroupDocsCloudStorageDto dto){
+    private ResponseEntity<Resource> buildDownloadResponse(GroupDocsCloudStorageDTO dto){
         InputStream inputStream = null;
         try {
             // 创建文件资源

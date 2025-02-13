@@ -3,7 +3,7 @@ package com.lgfei.mytool.dto;
 import java.io.File;
 import java.io.Serializable;
 
-public class GroupDocsCloudStorageDto implements Serializable {
+public class GroupDocsCloudStorageDTO implements Serializable {
     private String downloadFileName;
     private File downloadFile;
 

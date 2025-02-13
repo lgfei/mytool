@@ -1,0 +1,13 @@
+# Get ClientId and ClientSecret from https://dashboard.groupdocs.cloud
+groupdocs:
+  client:
+    id: ENC(GhO6+ng9qXNKuUEp4XAnyAa1EGRzvkNzWmqPCutdKkALYAxAZnUa7fOm/VW0BI/q)
+    secret: ENC(sxvbi/NmpSQdWCqE7hUqEBQ4CDCV9P9HX+GIuzPhp5gmzVfFa6cuy+OQOFWjN6GA)
+  storage:
+    name: ENC(uYnlZ/t4lPXEN4KiU+fjgt+JcvOE2G1D5WdwBTyW5mc=)
+
+mytool:
+  file:
+    storage:
+      code-mybook: /opt/mytool/files/code/mybook/
+      groupdocs-conversion: /opt/mytool/files/groupdocs-conversion/

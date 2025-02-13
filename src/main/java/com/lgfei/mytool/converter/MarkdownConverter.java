@@ -12,7 +12,7 @@ import com.groupdocs.cloud.conversion.model.requests.ConvertDocumentRequest;
 import com.groupdocs.cloud.conversion.model.requests.DownloadFileRequest;
 import com.groupdocs.cloud.conversion.model.requests.UploadFileRequest;
 import com.lgfei.mytool.config.GroupDocsCloudConfig;
-import com.lgfei.mytool.dto.GroupDocsCloudStorageDto;
+import com.lgfei.mytool.dto.GroupDocsCloudStorageDTO;
 import com.lgfei.mytool.exception.CommonException;
 import com.lgfei.mytool.util.IOUtil;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -80,7 +80,7 @@ public class MarkdownConverter {
         );
     }
 
-    public GroupDocsCloudStorageDto convertHtmlToPdf(String html, String filePath, String fileName) {
+    public GroupDocsCloudStorageDTO convertHtmlToPdf(String html, String filePath, String fileName) {
         String htmlFileName = fileName + ".html";
         String htmlFilePath = filePath + htmlFileName;
         String docxFileName = fileName + ".docx";
@@ -135,7 +135,7 @@ public class MarkdownConverter {
             File downloadFile = fileApi.downloadFile(downloadFileRequest);
 
             // 组装返回结果
-            GroupDocsCloudStorageDto dto = new GroupDocsCloudStorageDto();
+            GroupDocsCloudStorageDTO dto = new GroupDocsCloudStorageDTO();
             dto.setDownloadFile(downloadFile);
             dto.setDownloadFileName(convertedResult.getName());
             return dto;

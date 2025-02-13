@@ -1,16 +1,10 @@
-jasypt:
-  encryptor:
-    algorithm: PBEWITHHMACSHA512ANDAES_256
-    password: jaspyt_password
-    #iv-generator-classname: org.jasypt.iv.NoIvGenerator
-
 # Get ClientId and ClientSecret from https://dashboard.groupdocs.cloud
 groupdocs:
   client:
-    id: ENC(2WBnYMv7zb0V49pcKzz2GB9otUk5E/v/hwdiZR7y1kObP+HyvGTzXIVESJYMJcnt6Y5cbuPhvjfwO7iGlX8GZeWEyjgb1IBVpGCGRpClrEU=)
-    secret: ENC(JNBI4bzStPidEnrA5kSrtkJ3D5f0WZvjiWO9OPWTJ4BeF0poyje2+PfSzVtfKt+ErjYmIqF7McRZULFSoyG0B7EG+/mk4KOpZMCn0lIUgo4=)
+    id: ENC(u5R9KkpmzRsnEC5RW1JFnDkctjYBPA5o/Fnr5d50QeqUgHuL57dI7dMcw7/RJ+i5)
+    secret: ENC(jHgHqazyYllvPQinSRWZTZZPTn/O2+UCUhzYz+QlGh21i7UFvvEOo0um1noYiZfH)
   storage:
-    name: ENC(f96hVPKv/O8RKkJsT4syDHUgKcq7vTkreRcnDDDU9r+78DVKDG1R8ZHp0d45tURrbHHXkVtGaSXHQaArrziSlQ==)
+    name: ENC(DFMIh+Pf+7vwfAwVgYyNqDdQPZvraDr9MAzdGSmzqEs=)
 
 mytool:
   file:

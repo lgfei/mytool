@@ -13,3 +13,10 @@ spring:
 sentinel:
   qps:
     limit: 1
+
+jasypt:
+  encryptor:
+    #algorithm: PBEWithHMACSHA512AndAES_256
+    algorithm: PBEWithSHA1AndDESede
+    password: jasypt
+    #iv-generator-classname: org.jasypt.iv.NoIvGenerator

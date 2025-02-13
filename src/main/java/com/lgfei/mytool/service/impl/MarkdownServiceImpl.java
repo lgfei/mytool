@@ -1,7 +1,7 @@
 package com.lgfei.mytool.service.impl;
 
 import com.lgfei.mytool.converter.MarkdownConverter;
-import com.lgfei.mytool.dto.GroupDocsCloudStorageDto;
+import com.lgfei.mytool.dto.GroupDocsCloudStorageDTO;
 import com.lgfei.mytool.exception.CommonException;
 import com.lgfei.mytool.service.MarkdownService;
 import com.lgfei.mytool.util.DateUtil;
@@ -14,8 +14,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Service
 public class MarkdownServiceImpl implements MarkdownService {
@@ -43,7 +41,7 @@ public class MarkdownServiceImpl implements MarkdownService {
      * @return
      */
     @Override
-    public GroupDocsCloudStorageDto generateResume() {
+    public GroupDocsCloudStorageDTO generateResume() {
         String currDate = DateUtil.getCurrDate2yyyyMMdd();
         String workDir = groupdocsConversionDir + currDate + File.separator;
         String currTime = DateUtil.getCurrTime2yyyyMMddHHmmss();
@@ -77,7 +75,7 @@ public class MarkdownServiceImpl implements MarkdownService {
         }
 
         // 3.将html文件转为想要文件类型
-        GroupDocsCloudStorageDto resultDto = null;
+        GroupDocsCloudStorageDTO resultDto = null;
         try {
             resultDto = converter.convertHtmlToPdf(html, workDir, fileName);
             LOGGER.info("html文件转化为目标文件成功");
@@ -88,7 +86,7 @@ public class MarkdownServiceImpl implements MarkdownService {
     }
 
     @Override
-    public GroupDocsCloudStorageDto toHtml(String md) {
+    public GroupDocsCloudStorageDTO toHtml(String md) {
         // 校验
         String mdData = md.trim();
         if(!StringUtils.hasLength(mdData)){
@@ -129,7 +127,7 @@ public class MarkdownServiceImpl implements MarkdownService {
             throw new CommonException("将markdown文件转为html文件失败", e);
         }
 
-        GroupDocsCloudStorageDto dto = new GroupDocsCloudStorageDto();
+        GroupDocsCloudStorageDTO dto = new GroupDocsCloudStorageDTO();
         dto.setDownloadFileName(htmlFileName);
         dto.setDownloadFile(new File(htmlFilePath));
 

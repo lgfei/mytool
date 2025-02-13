@@ -1,14 +1,12 @@
 package com.lgfei.mytool.service;
 
-import com.lgfei.mytool.dto.GroupDocsCloudStorageDto;
-
-import java.io.File;
+import com.lgfei.mytool.dto.GroupDocsCloudStorageDTO;
 
 /**
  *
  */
 public interface MarkdownService {
 
-    GroupDocsCloudStorageDto generateResume();
-    GroupDocsCloudStorageDto toHtml(String md);
+    GroupDocsCloudStorageDTO generateResume();
+    GroupDocsCloudStorageDTO toHtml(String md);
 }
