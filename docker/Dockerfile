@@ -5,8 +5,8 @@ RUN apk --update add tzdata && \
     echo "Asia/Shanghai" > /etc/timezone && \
     apk del tzdata && \
     rm -rf /var/cache/apk/* && \
-	apk add git && \
-	mkdir -p /opt/mytool/
+    apk add git && \
+    mkdir -p /opt/mytool/
 
 WORKDIR /opt/mytool/
 
