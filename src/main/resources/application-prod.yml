@@ -11,3 +11,4 @@ mytool:
     storage:
       code-mybook: /opt/mytool/files/code/mybook/
       groupdocs-conversion: /opt/mytool/files/groupdocs-conversion/
+      navicat: /opt/mytool/files/navicat/

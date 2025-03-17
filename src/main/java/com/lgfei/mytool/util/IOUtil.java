@@ -1,25 +1,28 @@
 package com.lgfei.mytool.util;
 
 import com.lgfei.mytool.exception.CommonException;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public final class IOUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(IOUtil.class);
+
+    private static void checkParentDir(String filePath){
+        Path path = Paths.get(filePath);
+        Path directory = path.getParent();
+        File dir = directory.toFile();
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+    }
+
     public static void closeIOStream(InputStream in, OutputStream out){
         if(null != in){
             try {
@@ -140,12 +143,22 @@ public final class IOUtil {
         }
     }
 
-    private static void checkParentDir(String filePath){
-        Path path = Paths.get(filePath);
-        Path directory = path.getParent();
-        File dir = directory.toFile();
-        if(!dir.exists()){
-            dir.mkdirs();
+    public static File copyFile(MultipartFile file, String localPath) {
+        if (file.isEmpty()) {
+            throw new RuntimeException("file is empty");
+        }
+        File localDir = new File(localPath);
+        localDir.mkdirs();
+        String fileName = file.getOriginalFilename();
+        String fileSuffix = "." + FilenameUtils.getExtension(fileName);
+        String currTime = DateUtil.getCurrTime2yyyyMMddHHmmss();
+        String newFileName = fileName.replace(fileSuffix, "_" + currTime  + fileSuffix);
+        File newFile = new File(localDir, newFileName);
+        try {
+            file.transferTo(newFile);
+            return newFile;
+        } catch (IOException e) {
+            throw new RuntimeException("将MultipartFile保存至本地异常", e);
         }
     }
 }
